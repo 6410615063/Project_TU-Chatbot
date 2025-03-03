@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Form Page</title>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        <form method="post" action="\create_user\">
+            {% csrf_token %}
+            <div style="background-color: #c00832; text-align: center;">
+                Create User
+            </div>
+            <div style="background-color: #f27134;">
+                <div>
+                    <label for="input_username">Username: </label>
+                    <input type="text" name="username" id="input_username">
+                </div>
+                <div>
+                    <label for="input_password">Password: </label>
+                    <input type="text" name="password" id="input_password">
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <input type="submit">
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

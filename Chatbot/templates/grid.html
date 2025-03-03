@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'grid.css' %}">
+    <title>
+      Test Chatbot Page
+    </title>
+  </head>
+  <body>
+    <div id="webpage">
+      <div class="web_head" id="logo_uni">
+        <!--<img src="https://th.bing.com/th/id/OIP.LlmJSCcnA9eqe8Qcbnf2awHaHa?w=145&h=180&c=7&r=0&o=5&pid=1.7">-->
+        <img src="{% static 'university_logo.webp' %}">
+      </div>
+      <div class="web_head" id="logo_tse">
+        <img src="{% static 'tse_logo_clear.png' %}">
+      </div>
+      <div class="web_head" id="head_empty">
+      </div>
+      <div class="web_head" id="head_topic">
+        {{ current_chat }}
+      </div>
+      <div class="web_head" id="option">
+        <!--<img src="https://th.bing.com/th/id/OIP.LlmJSCcnA9eqe8Qcbnf2awHaHa?w=145&h=180&c=7&r=0&o=5&pid=1.7">-->
+        <img src="{% static 'burger_button_4.png' %}" onclick="toggle()">
+      </div>
+      <div id="topic_list">
+        {% if authenticated %}
+          <a class="button" href="/create_chat/" id="btn_new_chat">
+            New Chat
+          </a>
+          {% for chat in chats %}
+            {% if chat == current_chat %}
+              <div class="topic_selected">
+                <a>
+            {% else %}
+              <div class="topic">
+                <a href="/change_chat/{{ chat }}">
+            {% endif %}
+                  {{ chat }}
+                </a>
+                <div class="button-delete-topic">
+                    <a href="/delete_chat/{{ chat }}">
+                      Delete
+                    </a>
+                </div>
+              </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div id="chatlog">
+        {% for message in chatlog %}
+          <div class="{% cycle 'chat-left' 'chat-right' %}">{% cycle 'Assistant: ' 'User: ' %} {{ message }}</div>
+        {% endfor %}
+      </div>
+      <div id="interface_div">
+        <form method="post" action="/send_msg/" id="interface_form">
+          {% csrf_token %}
+          <input type="text" placeholder="Enter your message here" name="input_msg" id="input_text">
+          <button id="btn_send">
+            Send
+          </button>
+          <a class="button" href="/refresh_chat/" id="btn_refresh">
+            Refresh
+          </a>
+        </form>
+      </div>
+      <div id="extra">
+        <!-- for dropdown -->
+        <!--<div id="dropdown_list" style="display: none; position: absolute; z-index: 1;">-->
+        <div id="dropdown_list">
+            <div>
+              {% if authenticated %}
+                <a href="/logout/" id="btn_logout">
+                  Logout
+                </a>
+              {% else %}
+                <a href="/login/" id="btn_login">
+                  Login
+                </a>
+              {% endif %}
+            </div>
+            <div>
+                <a href="https://en.engr.tu.ac.th/">
+                    Faculty Website
+                </a>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var btn_2_visible = false;
+
+      function toggle() {
+          btn_2_visible = !btn_2_visible
+
+          button = document.getElementById('dropdown_list');
+          if(btn_2_visible) {
+              button.style.display = 'inline';
+          } else {
+              button.style.display = 'none';
+          }
+      }
+
+      function msg() {
+          alert("button 2 pressed");
+      }
+    </script>
+  </body>
+</html>
