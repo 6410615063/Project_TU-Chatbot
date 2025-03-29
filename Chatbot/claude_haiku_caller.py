@@ -33,8 +33,12 @@ def generate() :
     return "Insert message from claude-haiku API here"
 
 def generate(context) :
-    # Path to credentials JSON file
-    service_account_file = Path(settings.BASE_DIR, "static/cn408-homework-012d7d8cf8a6.json")  # Ensure this path is correct
+    # get service account and project id
+    service_account_name = "service_account.json"  # Ensure this path is correct
+    service_account_file = Path(settings.BASE_DIR, f"static/{service_account_name}")
+    with open(service_account_file, "r") as file:
+        service_account_data = json.load(file)
+        project_id = service_account_data["project_id"]
 
     # Define the required scopes
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
@@ -52,7 +56,7 @@ def generate(context) :
     access_token = credentials.token
 
     # Plan - make a curl request to vertex api
-    url = "https://us-central1-aiplatform.googleapis.com/v1/projects/cn408-homework/locations/us-central1/publishers/anthropic/models/claude-3-haiku@20240307:streamRawPredict"
+    url = f"https://us-central1-aiplatform.googleapis.com/v1/projects/{project_id}/locations/us-central1/publishers/anthropic/models/claude-3-haiku@20240307:streamRawPredict"
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json"

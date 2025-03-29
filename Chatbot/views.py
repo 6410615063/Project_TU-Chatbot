@@ -9,7 +9,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import requests
-from .line_chatbot import get_stateless_access_token, handle_messages, reply
+# import evereything from line_chatbot.py
+from .line_chatbot import *
 
 # Create your views here.
 
