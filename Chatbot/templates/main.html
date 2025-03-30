@@ -34,4 +34,13 @@
         </div>
     </div>
 </body>
+<script>
+    // Scroll to the bottom of the chat log when the page loads
+    window.onload = function() {
+        const chatlog = document.getElementById('chatlog');
+        chatlog.scrollTop = chatlog.scrollHeight; // Scroll to the bottom of the chat log
+
+        console.log("Chat log scrolled to the bottom.");
+    };
+</script>
 </html>

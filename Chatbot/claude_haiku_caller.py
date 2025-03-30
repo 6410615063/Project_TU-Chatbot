@@ -80,44 +80,34 @@ def generate(context) :
         print(f"Request failed with status code {response.status_code} and response: {response.text}")
         return "Error happend, check terminal"
 
-# can call the API no more than 5 times per minute
-# plan: put the generate requests in a queue and process them one by one when possible
-
-# variable for queue
-generate_queue = Queue() # queue for generate requests
 recent_timestamps = [] # list of recent timestamps of generate requests
-max_requests_per_minute = 5 # max number of requests per minute
-lock = threading.Lock() # lock for accessing recent_timestamps (?)
-
-# fucntion for processing queue
-# PROBLEM: PythonAnywhere do not allow this to run every seconds
-# alternatve:
-# - make all requests wait 13 seconds before replying
-# - keep track of recent timestamps, then tell user to resend the message if the number of recent timestamps is more than 5
-def process_queue() :
-    global generate_queue
+max_requests_per_minute = 4 # max number of requests per minute
+# can call the API no more than 5 times per minute (seem to still have error if send 5 requests too quickly?)
+# check if there are 5 requests in the last minute, if not, allow the request
+def can_generate() :
     global recent_timestamps
     global max_requests_per_minute
-    global lock
 
-    while True :
-        # get the current timestamp
-        current_timestamp = time.time()
+    # get the current timestamp
+    current_timestamp = time.time()
 
-        # remove timestamps that are older than 1 minute
-        with lock :
-            recent_timestamps = [timestamp for timestamp in recent_timestamps if timestamp > current_timestamp - 60]
+    # remove timestamps that are older than 1 minute
+    recent_timestamps = [timestamp for timestamp in recent_timestamps if timestamp > current_timestamp - 60]
 
-        # check if the number of recent timestamps is less than the max requests per minute
-        if len(recent_timestamps) < max_requests_per_minute :
-            # get the next generate request from the queue
-            if not generate_queue.empty() :
-                generate_request = generate_queue.get()
-                context = generate_request[0]
-                generate_request[1].set_result(generate(context))
-                with lock :
-                    recent_timestamps.append(current_timestamp)
-            else :
-                time.sleep(1)
-        else :
-            time.sleep(1)
+    # check if the number of recent timestamps is less than the max requests per minute
+    if len(recent_timestamps) < max_requests_per_minute :
+        # add the current timestamp to the list
+        recent_timestamps.append(current_timestamp)
+        print(f"Request sent. {len(recent_timestamps)} requests in the last minute")
+        return True
+    else :
+        print("Too many requests, please wait")
+        return False
+
+def check_then_generate(context) :
+    # check if the number of recent timestamps is less than the max requests per minute
+    # if can generate, call the generate function
+    if can_generate() :
+        return generate(context)
+    else :
+        return "Too many requests, please wait"
