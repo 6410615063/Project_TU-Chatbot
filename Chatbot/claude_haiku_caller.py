@@ -4,6 +4,10 @@ import google.auth.transport.requests
 import json
 from django.conf import settings
 from pathlib import Path
+# for queuing the requests to the API
+import time
+import threading
+from queue import Queue
 
 # response -> message
 def convert(response) :
@@ -29,8 +33,12 @@ def generate() :
     return "Insert message from claude-haiku API here"
 
 def generate(context) :
-    # Path to credentials JSON file
-    service_account_file = Path(settings.BASE_DIR, "static/cn408-homework-012d7d8cf8a6.json")  # Ensure this path is correct
+    # get service account and project id
+    service_account_name = "service_account.json"  # Ensure this path is correct
+    service_account_file = Path(settings.BASE_DIR, f"static/{service_account_name}")
+    with open(service_account_file, "r") as file:
+        service_account_data = json.load(file)
+        project_id = service_account_data["project_id"]
 
     # Define the required scopes
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
@@ -48,7 +56,7 @@ def generate(context) :
     access_token = credentials.token
 
     # Plan - make a curl request to vertex api
-    url = "https://us-central1-aiplatform.googleapis.com/v1/projects/cn408-homework/locations/us-central1/publishers/anthropic/models/claude-3-haiku@20240307:streamRawPredict"
+    url = f"https://us-central1-aiplatform.googleapis.com/v1/projects/{project_id}/locations/us-central1/publishers/anthropic/models/claude-3-haiku@20240307:streamRawPredict"
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json"
@@ -71,4 +79,35 @@ def generate(context) :
     else:
         print(f"Request failed with status code {response.status_code} and response: {response.text}")
         return "Error happend, check terminal"
-        # return f"Request failed with status code {response.status_code} and response: {response.text}"
+
+recent_timestamps = [] # list of recent timestamps of generate requests
+max_requests_per_minute = 4 # max number of requests per minute
+# can call the API no more than 5 times per minute (seem to still have error if send 5 requests too quickly?)
+# check if there are 5 requests in the last minute, if not, allow the request
+def can_generate() :
+    global recent_timestamps
+    global max_requests_per_minute
+
+    # get the current timestamp
+    current_timestamp = time.time()
+
+    # remove timestamps that are older than 1 minute
+    recent_timestamps = [timestamp for timestamp in recent_timestamps if timestamp > current_timestamp - 60]
+
+    # check if the number of recent timestamps is less than the max requests per minute
+    if len(recent_timestamps) < max_requests_per_minute :
+        # add the current timestamp to the list
+        recent_timestamps.append(current_timestamp)
+        print(f"Request sent. {len(recent_timestamps)} requests in the last minute")
+        return True
+    else :
+        print("Too many requests, please wait")
+        return False
+
+def check_then_generate(context) :
+    # check if the number of recent timestamps is less than the max requests per minute
+    # if can generate, call the generate function
+    if can_generate() :
+        return generate(context)
+    else :
+        return "Too many requests, please wait"

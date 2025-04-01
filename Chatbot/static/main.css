@@ -16,12 +16,12 @@ div#interface {
 
 div.chat-left {
     text-align: left;
-    background-color: yellow;
+    background-color: #f27134;
 }
 
 div.chat-right {
     text-align: right;
-    background-color: lightskyblue;
+    background-color: #c00832;
 }
 
 a.button {
@@ -31,4 +31,17 @@ a.button {
     color: buttontext;
     background-color: buttonface;
     text-decoration: none;
+}
+
+table {
+    border: 0px;
+}
+
+img#logo {
+    width: 60px;
+    height: 60px;
+}
+
+div#chatlog {
+    background-color:White;
 }

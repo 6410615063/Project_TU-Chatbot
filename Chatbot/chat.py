@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from . import chatbot
 from .models import Profile, Chat
 from django.contrib.auth.models import User
@@ -38,7 +39,7 @@ chatlog = []
 #         chat = filtered_chats[0]
 #     else :
 #         chat = chats[0]
-    
+
 #     chat_content = [message["content"] for message in chat.messages]
 #     return chat_content
 
@@ -54,7 +55,7 @@ chatlog = []
 #     else :
 #         chat = chats[0]
 #         print('chat not found')
-    
+
 #     chat_content = [message["content"] for message in chat.messages]
 #     return chat_content
 
@@ -70,7 +71,8 @@ def get_chatlog_6(user, chat_name) :
     else :
         chat = chats[0]
         print('chat not found')
-    
+
+    # prepare chatlog for displaying
     chat_content = [message["content"] for message in chat.messages]
     return chat_content
 
@@ -158,10 +160,16 @@ def user_chat(user, chat_name, message) :
     else :
         chat = chats[0]
         print('user_chat: chat not found')
-    
+
     chatlog = chat.messages
     # add user message to log
     chatlog.append({"role": "user", "content": message})
+
+    # TODO: need to make sure that no message is empty
+    # this currently actually impacted the recorded chatlog
+    for message in chatlog :
+        if message['content'] == '' :
+            message['content'] = '-'
 
     # generate chatbot's message
     chatbot_message = chatbot.generate_chatbot_message(chatlog, "claude-haiku")
@@ -178,19 +186,25 @@ def guest_chat(chats, message) :
     chat_count = len(chats)
     chatlog = []
     for i in range(chat_count) :
+        # handle empty message
+        # this currently does not impacted the recorded chatlog
+        message = chats[i]
+        if message == '' :
+            message = '-'
+
         if (i % 2 == 0) :
             # assistant's
-            chatlog.append({"role": "assistant", "content": chats[i]})
+            chatlog.append({"role": "assistant", "content": message})
         else :
             # guest's
-            chatlog.append({"role": "user", "content": chats[i]})
+            chatlog.append({"role": "user", "content": message})
 
     # add user message to log
     chatlog.append({"role": "user", "content": message})
 
     # generate chatbot's message
     chatbot_message = chatbot.generate_chatbot_message(chatlog, "claude-haiku")
-    
+
     # add user message to log
     chatlog.append({"role": "assistant", "content": chatbot_message})
 

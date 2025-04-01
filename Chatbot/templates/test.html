@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <title>Test Chatbot Page</title>
+</head>
+<body>
+<table id="webpage">
+  <tr style="background-color:Red;">
+  	<td>
+        <!-- picture -->
+        <img id="logo" src="https://th.bing.com/th/id/OIP.LlmJSCcnA9eqe8Qcbnf2awHaHa?w=145&h=180&c=7&r=0&o=5&pid=1.7">
+        <!-- Chatbot_Webpage\static\university_logo.webp -->
+        <!-- {% static 'university_logo.webp' %} -->
+    </td>
+  	<td>current topic</td>
+  </tr>
+  <tr style="background-color:Yellow;">
+  	<td><!--topic list-->
+    	<table>
+        	<tr><td style="background-color:Orange;">topic 1</td></tr>
+        	<tr><td style="background-color:Red;">topic 2</td></tr>
+        	<tr><td style="background-color:Orange;">topic 3</td></tr>
+        </table>
+    </td>
+  	<td><!--chat-->
+    	<table>
+        	<tr>
+            	<td style="background-color:White;" colspan="2">
+                    <!-- chat log -->
+                    <div id="chatlog">
+                        {% for chat in chatlog %}
+                            <div class="{% cycle 'chat-left' 'chat-right' %}">{% cycle 'Assistant: ' 'User: ' %} {{ chat }}</div>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+        	<tr style="background-color:Red;">
+            	<!--chat ui-->
+                <div id="interface">
+                    <form method="post" action="/send_msg/">
+                        {% csrf_token %}
+                        <table>
+                            <tr>
+                                <td style="background-color:Gray;">
+                                    <input type="text" placeholder="Enter your message here" name="input_msg">
+                                </td>
+                                <td style="background-color:Orange;">
+                                    <button>Send</button>
+                                </td>
+                                <td style="background-color:Orange;">
+                                    <a class="button" href="/refresh_chat/"> Refresh </a>
+                                </td>
+                            </tr>
+                        </table>                
+                    </form>
+                </div>
+            </tr>
+        </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body {
   margin: 0;
 }
@@ -8,21 +9,30 @@ body {
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 15% 70% 15%;
-  grid-template-rows: 100px 100% 60px;
-  grid-template-areas:  "logo head_topic option"
-                        "topic_list chatlog extra"
-                        "topic_list interface extra"
+  /*grid-template-columns: 15% 70% 15%;*/
+  grid-template-columns: 15% 15% 40% 15% 15%;
+  grid-template-rows: 100px calc(100% - 132px) 32px;
+  grid-template-areas:  "logo_uni   logo_tse    head_topic  empty       option"
+                        "topic_list chatlog     chatlog     chatlog     extra"
+                        "topic_list interface   interface   interface   extra"
 }
 
-#logo {
-  grid-area: logo;
+#logo_uni {
+  grid-area: logo_uni;
+}
+
+#logo_tse {
+  grid-area: logo_tse;
 }
 
 #head_topic {
   grid-area: head_topic;
   display: grid;
   place-items: center;
+}
+
+#head_empty {
+  grid-area: empty;
 }
 
 #option {
@@ -37,13 +47,16 @@ body {
   grid-area: chatlog;
 }
 
-#interface {
+#interface_div {
   grid-area: interface;
+}
+
+#interface_form {
   display: grid;
-  grid-template-columns: 99% 0%;
-  grid-template-rows: 50% 50%;
-  grid-template-areas:  "input_text input_text"
-                        "btn_send btn_refresh"
+  grid-template-columns: calc(100% - 130px) 60px 70px;
+  grid-template-rows: 1fr;
+  grid-template-areas:  "input_text btn_send btn_refresh";
+  place-items: center;
 }
 
 #extra {
@@ -51,22 +64,23 @@ body {
 }
 
 .web_head {
-  background-color: red;
+  background-color: #c00832; /*uni's red*/
 }
 
 #topic_list, #extra {
-  background-color: salmon
+  background-color: #f2a785;
+  padding: 5px;
 }
 
 #chatlog {
-  background-color: lightgray;
+  overflow-y: auto;
 }
 
-#interface {
-  background-color: darkred
+#interface_div {
+  background-color: #c00832
 }
 
-#logo, #option {
+#logo_uni, #logo_tse, #option {
   display: grid;
   place-items: center;
 }
@@ -80,25 +94,40 @@ img {
   padding: 3px 6px;
 }
 .topic {
-  background-color: orange;
+  background-color: #f27134; /*uni's orange*/
 }
 .topic_selected {
-  background-color: red;
+  background-color: #c00832;
+}
+
+div.topic > a {
+  color: black;
+  text-decoration: none;
+}
+div.topic_selected > a {
+  color: black;
+  text-decoration: none;
 }
 
 #chatlog > div {
-  padding: 2px;
+  padding: 4px;
   width: fit-content;
+  border-radius: 6px;
 }
 div.chat-left {
   text-align: left;
   background-color: #f27134;
   margin: 5px 15px 5px 5px;
+  color: white;
 }
 div.chat-right {
     text-align: right;
-    background-color: #c00832;
-  margin: 5px 5px 5px 15px;
+    background-color: lightgray;
+  margin: 5px 5px 5px auto;
+}
+
+div#dropdown_list {
+  background-color: #c00832;
 }
 
 a.button {
@@ -108,20 +137,4 @@ a.button {
     color: buttontext;
     background-color: buttonface;
     text-decoration: none;
-}
-
-#interface>* {
-  margin: 5px;
-}
-#input_text {
-  grid-area: input_text;
-  width: 100%;
-}
-#btd_send {
-  grid-area: btn_send;
-  width: 100%;
-}
-#btd_refresh {
-  grid-area: btn_refresh;
-  width: 100%;
 }

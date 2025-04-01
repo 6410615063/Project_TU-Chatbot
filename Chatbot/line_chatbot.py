@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import requests
 from .chatbot import generate_chatbot_message
 
@@ -28,7 +29,7 @@ def get_stateless_access_token() :
 # from a list of incoming msg from Line user, create a reply JSON
 def handle_messages(messages_list) :
     messages_text = "\n".join(messages_list)
-    
+
     reply = [
         {
             "type": "text"

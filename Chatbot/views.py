@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import requests
+# import evereything from line_chatbot.py
 from .line_chatbot import *
 
 # Create your views here.
@@ -43,7 +44,6 @@ def main(request) :
         context['chats'] = chat.get_chats_2(user) # need to make a new func that take User obj
     else :
         # guest
-
         context['current_chat'] = 'Insert Chat name here'
         context['chatlog'] = request.session.get('chatlog', ["Hello, how can I help you?"])
     return render(request, 'grid.html', context)
@@ -71,7 +71,6 @@ def send_msg2(request) :
     else :
         # guest
         chatlog = request.session.get('chatlog', ["Hello, how can I help you?"])
-
         new_chatlog = chat.guest_chat(chatlog, user_message)
 
         request.session['chatlog'] = new_chatlog
@@ -84,7 +83,6 @@ def refresh_chat(request) :
 def change_chat(request, chat_name) :
     # call a function that change a value?
     request.session['current_chat'] = chat_name
-
     return redirect('main')
 
 def create_chat(request) :
@@ -116,7 +114,6 @@ def login_user(request) :
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-
             return redirect('main')
 
     return render(request, 'login.html')
@@ -128,7 +125,6 @@ def login_user_test(request) :
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-
     return redirect('main')
 
 def logout_user(request) :
@@ -156,7 +152,6 @@ def create_user(request) :
 
 
         print(f"User '{username}' created")
-
         return redirect('main')
     else :
         return render(request, 'create_user.html')
@@ -197,8 +192,6 @@ def linebot_test(request) :
         # json.dump(content, file, indent=4)
 
         # get reply token
-
-
         reply_token = ""
         # write only text message
         texts = []
@@ -267,7 +260,6 @@ Received messages:\n
         # Make the POST request
         response = requests.post(url, headers=headers, json=data)
 
-
     return HttpResponse("test string", status=200)
 
 
@@ -310,6 +302,5 @@ Received messages:\n
     messages = handle_messages2(texts)
     #   3.3 send the reply message back to the user
     reply(channel_access_token, reply_token, messages)
-
         # send a 200 response back to Line to confirm that the message has been received
     return HttpResponse("test string", status=200)

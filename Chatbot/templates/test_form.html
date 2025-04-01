@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Form Page</title>
+</head>
+<body>
+    hello
+    <div id="btn_1">
+        <button onclick="toggle()">Button 1</button>
+    </div>
+    
+    <div id="dropdown_list" class="a" style="display: none; position: absolute; z-index: 1;">
+        <button onclick="msg()">Button 2</button>
+        <button onclick="msg()">Button 3</button>
+    </div>
+    <!-- <div id="dropdown_list" class="a" style="display: none; position: absolute; z-index: 1;">
+        <button onclick="msg()">Button 3</button>
+    </div> -->
+
+    hi
+
+    <script>
+        var btn_2_visible = false;
+
+        function toggle() {
+            btn_2_visible = !btn_2_visible
+
+            button = document.getElementById('dropdown_list');
+            if(btn_2_visible) {
+                button.style.display = 'inline';
+            } else {
+                button.style.display = 'none';
+            }
+            
+            // buttons = Array.from(document.getElementsByClassName('a'));
+            // if(btn_2_visible) {
+            //     buttons.forEach(button => {
+            //         button.style.display = 'inline'; 
+            //     });
+            // } else {
+            //     buttons.forEach(button => {
+            //         button.style.display = 'none'; 
+            //     });
+            // }
+        }
+
+        function msg() {
+            alert("button 2 pressed");
+        }
+    </script>
+    <!-- <form method="post" action="\create_user\">
+        {% csrf_token %}
+        <div style="background-color: #f27134;">
+            <div>
+                <label for="input_username">Username: </label>
+                <input type="text" name="username" id="input_username">
+            </div>
+            <div>
+                <label for="input_password">Password: </label>
+                <input type="text" name="password" id="input_password">
+            </div>
+            <div>
+                <input type="submit">
+            </div>
+        </div>
+    </form> -->
+</body>
+</html>
