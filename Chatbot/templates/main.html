@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <title>Test Chatbot Page</title>
+</head>
+<body>
+    <div id="chat">
+        <div id="chatlog">
+            {% for chat in chatlog %}
+                <div class="{% cycle 'chat-left' 'chat-right' %}">{% cycle 'Assistant: ' 'User: ' %} {{ chat }}</div>
+            {% endfor %}
+        </div>
+        <div id="interface">
+            <form method="post" action="/send_msg/">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <td>
+                            <input type="text" placeholder="Enter your message here" name="input_msg">
+                        </td>
+                        <td>
+                            <button>Send</button>
+                        </td>
+                        <td>
+                            <a class="button" href="/refresh_chat/"> Refresh </a>
+                        </td>
+                    </tr>
+                </table>                
+            </form>
+        </div>
+    </div>
+</body>
+</html>
