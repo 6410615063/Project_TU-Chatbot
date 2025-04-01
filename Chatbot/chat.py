@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from . import chatbot
 from .models import Profile, Chat
 from django.contrib.auth.models import User

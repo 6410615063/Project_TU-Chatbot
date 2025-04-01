@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import requests
 from .chatbot import generate_chatbot_message
 
