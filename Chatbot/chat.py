@@ -147,7 +147,7 @@ def user_chat(message) :
     # add user message to log
     append_chatlog({"role": "assistant", "content": chatbot_message})
 
-def user_chat(user, chat_name, message) :
+def user_chat(user, chat_name, message_new) :
     profile = user.profile
     chats = profile.chats.all()
 
@@ -162,7 +162,7 @@ def user_chat(user, chat_name, message) :
 
     chatlog = chat.messages
     # add user message to log
-    chatlog.append({"role": "user", "content": message})
+    chatlog.append({"role": "user", "content": message_new})
 
     # TODO: need to make sure that no message is empty
     # this currently actually impacted the recorded chatlog
@@ -179,7 +179,7 @@ def user_chat(user, chat_name, message) :
     chat.messages = chatlog
     chat.save()
 
-def guest_chat(chats, message) :
+def guest_chat(chats, message_new) :
     # chatbot is in the format ['msg1', 'msg2', 'msg3', ...]
     # need to change into [{'role': 'assistant', 'context': 'msg1}, {'role': 'user', 'context': 'msg2}, ...]
     chat_count = len(chats)
@@ -199,7 +199,7 @@ def guest_chat(chats, message) :
             chatlog.append({"role": "user", "content": message})
 
     # add user message to log
-    chatlog.append({"role": "user", "content": message})
+    chatlog.append({"role": "user", "content": message_new})
 
     # generate chatbot's message
     chatbot_message = chatbot.generate_chatbot_message(chatlog, "claude-haiku")
