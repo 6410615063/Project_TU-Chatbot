@@ -308,7 +308,7 @@ Received messages:\n
     #   3.1 request a channel access token
     channel_access_token = get_stateless_access_token()
     #   3.2 prepare the reply message
-    messages = handle_messages(texts)
+    messages = handle_messages2(texts)
     #   3.3 send the reply message back to the user
     reply(channel_access_token, reply_token, messages)
     
