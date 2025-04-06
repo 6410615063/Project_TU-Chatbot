@@ -9,7 +9,8 @@ body {
   height: 100vh;
   display: grid;
   /*grid-template-columns: 15% 70% 15%;*/
-  grid-template-columns: 15% 15% 40% 15% 15%;
+  /*grid-template-columns: max(15%, 135px) 15% 40% 15% 15%;*/
+  grid-template-columns: max(15%, 140px) 15% auto 15% max(15%, 60px);
   grid-template-rows: 100px calc(100% - 132px) 32px;
   grid-template-areas:  "logo_uni   logo_tse    head_topic  empty       option"
                         "topic_list chatlog     chatlog     chatlog     extra"
@@ -52,10 +53,11 @@ body {
 
 #interface_form {
   display: grid;
-  grid-template-columns: calc(100% - 130px) 60px 70px;
+  grid-template-columns: calc(100% - 140px) 65px 65px;
   grid-template-rows: 1fr;
   grid-template-areas:  "input_text btn_send btn_refresh";
   place-items: center;
+  padding: 5px;
 }
 
 #extra {
@@ -87,16 +89,18 @@ body {
   place-items: center;
 }
 
-/*img {*/
-/*  width: 80px;*/
-/*  width: 80px;*/
-/*}*/
 img {
-  width: 80%;
-  width: 80%;
+  width: min(80%, 80px);
+  width: min(80%, 80px);
 }
 
-#topic_list > div {
+div.button_div {
+    margin: 0px 5px 5px 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.topic, .topic_selected {
   padding: 3px 6px;
   display: flex;
 }
@@ -182,17 +186,20 @@ a.button {
 }
 
 #interface_form > * {
-  margin: 5px;
+  margin: 0px 5px;
 }
 #input_text {
   grid-area: input_text;
   width: calc(100% - 20px);
 }
-#btd_send {
+#btn_send {
   grid-area: btn_send;
-  width: 100%;
+  width: calc(100% - 10px);
+  font-size: 16px;
+  border-width: 1px;
+  border-radius: 3px;
 }
-#btd_refresh {
+#btn_refresh {
   grid-area: btn_refresh;
-  width: 100%;
+  width: calc(100% - 10px);
 }

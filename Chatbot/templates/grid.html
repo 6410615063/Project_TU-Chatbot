@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'grid.css' %}">
     <title>
-      Test Chatbot Page
+      TU Chatbot
     </title>
   </head>
   <body>
@@ -29,9 +29,11 @@
       </div>
       <div id="topic_list">
         {% if authenticated %}
-          <a class="button" href="/create_chat/" id="btn_new_chat">
-            New Chat
-          </a>
+            <div class="button_div">
+              <a class="button" href="/create_chat/" id="btn_new_chat">
+                New Chat
+              </a>
+            </div>
           {% for chat in chats %}
             {% if chat == current_chat %}
               <div class="topic_selected">
@@ -63,9 +65,11 @@
           <button id="btn_send">
             Send
           </button>
-          <a class="button" href="/refresh_chat/" id="btn_refresh">
-            Refresh
-          </a>
+          <div id="btn_refresh">
+              <a class="button" href="/refresh_chat/">
+                Refresh
+              </a>
+          </div>
         </form>
       </div>
       <div id="extra">
@@ -93,6 +97,13 @@
     </div>
 
     <script>
+         // Scroll to the bottom of the chat log when the page loads
+        window.onload = function() {
+            const chatlog = document.getElementById('chatlog');
+            chatlog.scrollTop = chatlog.scrollHeight; // Scroll to the bottom of the chat log
+
+            console.log("Chat log scrolled to the bottom.");
+        };
       var btn_2_visible = false;
 
       function toggle() {

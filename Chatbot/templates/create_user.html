@@ -3,27 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Form Page</title>
+    <title>TU Chatbot - Create Account</title>
 </head>
 <body>
     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
         <form method="post" action="\create_user\">
             {% csrf_token %}
-            <div style="background-color: #c00832; text-align: center;">
-                Create User
+            <div style="background-color: #c00832; text-align: center; padding: 5px;">
+                Create Account
             </div>
             <div style="background-color: #f27134;">
-                <div>
-                    <label for="input_username">Username: </label>
-                    <input type="text" name="username" id="input_username">
-                </div>
-                <div>
-                    <label for="input_password">Password: </label>
-                    <input type="text" name="password" id="input_password">
-                </div>
-                <div style="display: flex; justify-content: center;">
-                    <input type="submit">
-                </div>
+                <table style="padding: 5px;">
+                    <tr>
+                        <td>
+                            <label for="input_username">Username: </label>
+                        </td>
+                        <td>
+                            <input type="text" name="username" id="input_username">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="input_password">Password: </label>
+                        </td>
+                        <td>
+                            <input type="password" name="password" id="input_password">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div style="display: flex; justify-content: center;">
+                                <input type="submit" value="Create Account">
+                            </div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <div style="text-align: center;">
+                <a href="\login"> I already have an account </a>
+            </div>
+            <div style="text-align: center;">
+                <a href="\"> Use the website as a Guest </a>
             </div>
         </form>
     </div>

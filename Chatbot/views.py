@@ -44,7 +44,7 @@ def main(request) :
         context['chats'] = chat.get_chats_2(user) # need to make a new func that take User obj
     else :
         # guest
-        context['current_chat'] = 'Insert Chat name here'
+        context['current_chat'] = 'Guest Chat'
         context['chatlog'] = request.session.get('chatlog', ["Hello, how can I help you?"])
     return render(request, 'grid.html', context)
 
