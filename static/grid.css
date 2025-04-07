@@ -20,10 +20,12 @@ body {
 
 #logo_uni {
   grid-area: logo_uni;
+  transition: background-color 0.3s;
 }
 
 #logo_tse {
   grid-area: logo_tse;
+  transition: background-color 0.3s;
 }
 
 #head_topic {
@@ -46,14 +48,21 @@ body {
 
 #topic_list {
   grid-area: topic_list;
+  background-color: #f2a785;
+  overflow-y: auto;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 #chatlog {
   grid-area: chatlog;
+  overflow-y: auto;
+  background-color: #ffffff;
 }
 
 #interface_div {
   grid-area: interface;
+  background-color: #c00832;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 #interface_form {
@@ -100,10 +109,14 @@ img {
   width: min(80%, 80px);
 }
 
+img:hover {
+  transform: scale(1.05);
+}
+
 div.button_div {
-    margin: 0px 5px 5px 5px;
-    display: flex;
-    justify-content: center;
+  margin: 0px 5px 10px 5px;
+  display: flex;
+  justify-content: center;
 }
 
 .topic, .topic_selected {
@@ -153,6 +166,10 @@ div.button-delete-topic {
   margin: 0px 0px 0px auto;
 }
 
+.button-delete-topic a:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 #chatlog > div {
   padding: 4px;
   width: fit-content;
@@ -182,7 +199,8 @@ div.chat-right {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.dropdown_content {
+#dropdown_list > div {
+  transition: background-color 0.3s;
 }
 
 a.button {
@@ -192,6 +210,17 @@ a.button {
     color: buttontext;
     background-color: buttonface;
     text-decoration: none;
+}
+
+#dropdown_list > div:hover {
+  background-color: #a00628;
+}
+
+#dropdown_list a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  text-align: center;
 }
 
 #interface_form > * {
