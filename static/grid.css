@@ -1,20 +1,21 @@
 body {
   margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
 }
 
-#webpage{
+#webpage {
   margin: 0;
   padding: 0;
   width: 100vw;
   height: 100vh;
   display: grid;
-  /*grid-template-columns: 15% 70% 15%;*/
-  /*grid-template-columns: max(15%, 135px) 15% 40% 15% 15%;*/
   grid-template-columns: max(15%, 140px) 15% auto 15% max(15%, 60px);
   grid-template-rows: 100px calc(100% - 132px) 32px;
   grid-template-areas:  "logo_uni   logo_tse    head_topic  empty       option"
                         "topic_list chatlog     chatlog     chatlog     extra"
-                        "topic_list interface   interface   interface   extra"
+                        "topic_list interface   interface   interface   extra";
+  background-color: white;
 }
 
 #logo_uni {
@@ -29,6 +30,9 @@ body {
   grid-area: head_topic;
   display: grid;
   place-items: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: white;
 }
 
 #head_empty {
@@ -37,6 +41,7 @@ body {
 
 #option {
   grid-area: option;
+  cursor: pointer;
 }
 
 #topic_list {
@@ -64,6 +69,7 @@ body {
   grid-area: extra;
   background-color: #f2a785;
   position: relative;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .web_head {
@@ -103,26 +109,29 @@ div.button_div {
 .topic, .topic_selected {
   padding: 3px 6px;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
 }
+
 .topic {
   background-color: #f27134; /*uni's orange*/
 }
+
 .topic_selected {
   background-color: #c00832;
+  color: white;
 }
 
-div.topic > a {
-  color: black;
-  text-decoration: none;
-}
-div.topic_selected > a {
-  color: black;
-  text-decoration: none;
+.topic:hover {
+  transform: translateX(5px);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#topic_list > div > div > a {
-  color: black;
+div.topic > a, div.topic_selected > a {
+  color: inherit;
   text-decoration: none;
+  flex-grow: 1;
 }
 
 #extra > div > div {
@@ -133,9 +142,6 @@ div.topic_selected > a {
 #extra > div > :hover {
     /*background-color: green;*/
 }
-/*#extra > div > div :hover {*/
-/*    background-color: green;*/
-/*}*/
 
 #extra > div > div > a {
   color: black;
@@ -152,25 +158,28 @@ div.button-delete-topic {
   width: fit-content;
   border-radius: 6px;
 }
+
 div.chat-left {
   text-align: left;
   background-color: #f27134;
   margin: 5px 15px 5px 5px;
   color: white;
 }
+
 div.chat-right {
   text-align: right;
   background-color: lightgray;
   margin: 5px 5px 5px auto;
 }
 
-div#dropdown_list {
+#dropdown_list {
   background-color: #c00832;
-  /*padding: 5px;*/
-    display: none;
-    position: absolute;
-    z-index: 1;
+  display: none;
+  position: absolute;
+  z-index: 1;
   width: 100%;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown_content {
@@ -188,10 +197,12 @@ a.button {
 #interface_form > * {
   margin: 0px 5px;
 }
+
 #input_text {
   grid-area: input_text;
   width: calc(100% - 20px);
 }
+
 #btn_send {
   grid-area: btn_send;
   width: calc(100% - 10px);
@@ -199,6 +210,11 @@ a.button {
   border-width: 1px;
   border-radius: 3px;
 }
+
+#btn_send:hover {
+  background-color: #d85f1f;
+}
+
 #btn_refresh {
   grid-area: btn_refresh;
   width: calc(100% - 10px);
