@@ -5,121 +5,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'grid.css' %}">
-    <title>
-      TU Chatbot
-    </title>
+    <title>TU Chatbot</title>
   </head>
   <body>
     <div id="webpage">
       <div class="web_head" id="logo_uni">
-        <!--<img src="https://th.bing.com/th/id/OIP.LlmJSCcnA9eqe8Qcbnf2awHaHa?w=145&h=180&c=7&r=0&o=5&pid=1.7">-->
-        <img src="{% static 'university_logo.webp' %}">
+        <img src="{% static 'university_logo.webp' %}" alt="TU Logo">
       </div>
       <div class="web_head" id="logo_tse">
-        <img src="{% static 'tse_logo_clear.png' %}">
+        <img src="{% static 'tse_logo_clear.png' %}" alt="TSE Logo">
       </div>
-      <div class="web_head" id="head_empty">
-      </div>
+      <div class="web_head" id="head_empty"></div>
       <div class="web_head" id="head_topic">
         {{ current_chat }}
       </div>
       <div class="web_head" id="option">
-        <!--<img src="https://th.bing.com/th/id/OIP.LlmJSCcnA9eqe8Qcbnf2awHaHa?w=145&h=180&c=7&r=0&o=5&pid=1.7">-->
-        <img src="{% static 'burger_button_4.png' %}" onclick="toggle()">
+        <img src="{% static 'burger_button_4.png' %}" alt="Menu" onclick="toggle()">
       </div>
+
       <div id="topic_list">
         {% if authenticated %}
-            <div class="button_div">
-              <a class="button" href="/create_chat/" id="btn_new_chat">
-                New Chat
-              </a>
-            </div>
+          <div class="button_div">
+            <a class="button" href="/create_chat/" id="btn_new_chat">
+              New Chat
+            </a>
+          </div>
           {% for chat in chats %}
-            {% if chat == current_chat %}
-              <div class="topic_selected">
-                <a>
-            {% else %}
-              <div class="topic">
-                <a href="/change_chat/{{ chat }}">
-            {% endif %}
-                  {{ chat }}
+            <div class="{% if chat == current_chat %}topic_selected{% else %}topic{% endif %}">
+              <a href="{% if chat != current_chat %}/change_chat/{{ chat }}{% endif %}">
+                {{ chat }}
+              </a>
+              <div class="button-delete-topic">
+                <a href="/delete_chat/{{ chat }}" title="Delete chat">
+                  Delete
                 </a>
-                <div class="button-delete-topic">
-                    <a href="/delete_chat/{{ chat }}">
-                      Delete
-                    </a>
-                </div>
               </div>
+            </div>
           {% endfor %}
         {% endif %}
       </div>
+
       <div id="chatlog">
         {% for message in chatlog %}
-          <div class="{% cycle 'chat-left' 'chat-right' %}">{% cycle 'Assistant: ' 'User: ' %} {{ message }}</div>
+          <div class="{% cycle 'chat-left' 'chat-right' %}">
+            <strong>{% cycle 'Assistant: ' 'User: ' %}</strong>
+            {{ message }}
+          </div>
         {% endfor %}
       </div>
+
       <div id="interface_div">
         <form method="post" action="/send_msg/" id="interface_form">
           {% csrf_token %}
-          <input type="text" placeholder="Enter your message here" name="input_msg" id="input_text">
-          <button id="btn_send">
+          <input type="text" 
+                 placeholder="Type your message here..." 
+                 name="input_msg" 
+                 id="input_text"
+                 autocomplete="off"
+                 required>
+          <button type="submit" id="btn_send">
             Send
           </button>
           <div id="btn_refresh">
-              <a class="button" href="/refresh_chat/">
-                Refresh
-              </a>
+            <a class="button" href="/refresh_chat/" title="Refresh chat">
+              Refresh
+            </a>
           </div>
         </form>
       </div>
+
       <div id="extra">
-        <!-- for dropdown -->
-        <!--<div id="dropdown_list" style="display: none; position: absolute; z-index: 1;">-->
         <div id="dropdown_list">
-            <div>
-              {% if authenticated %}
-                <a href="/logout/" id="btn_logout">
-                  Logout
-                </a>
-              {% else %}
-                <a href="/login/" id="btn_login">
-                  Login
-                </a>
-              {% endif %}
-            </div>
-            <div>
-                <a href="https://en.engr.tu.ac.th/">
-                    Faculty Website
-                </a>
-            </div>
+          <div>
+            {% if authenticated %}
+              <a href="/logout/" id="btn_logout">
+                Logout
+              </a>
+            {% else %}
+              <a href="/login/" id="btn_login">
+                Login
+              </a>
+            {% endif %}
+          </div>
+          <div>
+            <a href="https://en.engr.tu.ac.th/" target="_blank" rel="noopener noreferrer">
+              Faculty Website
+            </a>
+          </div>
         </div>
       </div>
     </div>
 
     <script>
-         // Scroll to the bottom of the chat log when the page loads
-        window.onload = function() {
-            const chatlog = document.getElementById('chatlog');
-            chatlog.scrollTop = chatlog.scrollHeight; // Scroll to the bottom of the chat log
+      // Scroll to the bottom of the chat log when the page loads
+      window.onload = function() {
+        const chatlog = document.getElementById('chatlog');
+        chatlog.scrollTop = chatlog.scrollHeight;
+      };
 
-            console.log("Chat log scrolled to the bottom.");
-        };
-      var btn_2_visible = false;
+      let btn_2_visible = false;
 
       function toggle() {
-          btn_2_visible = !btn_2_visible
-
-          button = document.getElementById('dropdown_list');
-          if(btn_2_visible) {
-              button.style.display = 'inline';
-          } else {
-              button.style.display = 'none';
-          }
+        btn_2_visible = !btn_2_visible;
+        const button = document.getElementById('dropdown_list');
+        button.style.display = btn_2_visible ? 'inline' : 'none';
       }
 
-      function msg() {
-          alert("button 2 pressed");
-      }
+      // Add keyboard shortcut for sending messages (Ctrl+Enter)
+      document.getElementById('input_text').addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'Enter') {
+          document.getElementById('interface_form').submit();
+        }
+      });
     </script>
   </body>
 </html>
