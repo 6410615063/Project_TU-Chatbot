@@ -134,3 +134,21 @@ def guest_chat(chats, message_new) :
     chatlog_display = [message['content'] for message in chatlog]
 
     return chatlog_display
+
+def refresh_chat(user, chat_name) :
+    profile = user.profile
+    chats = profile.chats.all()
+
+    # get the user's chat based on given name
+    filtered_chats = chats.filter(name=chat_name)
+    if filtered_chats.count() == 1 :
+        chat = filtered_chats[0]
+        print('refresh_chat: chat found')
+    else :
+        chat = chats[0]
+        print('refresh_chat: chat not found')
+
+    chat.messages = [
+            {"role": "assistant", "content": "Hello, how can I help you?"}
+            ]
+    chat.save()

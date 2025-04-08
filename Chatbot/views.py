@@ -54,7 +54,6 @@ def send_msg(request) :
     user = request.user
     current_chat = request.session.get('current_chat', 'TestChat')
 
-    # chat.user_chat(user_message)
     chat.user_chat(user, current_chat, user_message)
     return redirect('main')
 
@@ -77,7 +76,18 @@ def send_msg2(request) :
     return redirect('main')
 
 def refresh_chat(request) :
-    chat.reset()
+    # check if user is logged in
+    isLoggedIn = request.user.is_authenticated
+    if (isLoggedIn) :
+        # user
+        user = request.user
+        current_chat = request.session.get('current_chat', 'TestChat')
+
+        # refresh chat
+        chat.refresh_chat(user, current_chat)
+    else :
+        # guest
+        request.session['chatlog'] = ["Hello, how can I help you?"]
     return redirect('main')
 
 def change_chat(request, chat_name) :
