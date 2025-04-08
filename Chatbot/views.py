@@ -160,7 +160,6 @@ def create_user(request) :
         # make new chat
         chat.create_chat(user)
 
-
         print(f"User '{username}' created")
         return redirect('main')
     else :

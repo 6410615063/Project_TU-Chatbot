@@ -32,11 +32,11 @@ def create_chat(user) :
     chats = profile.chats.all()
 
     # come up with a unique new name
-    new_name = 'New Chat'
-    number = 0
+    new_name = 'Chat 1'
+    number = 1
     while(chats.filter(name=new_name).exists()) :
         number += 1
-        new_name = f'New Chat{number}'
+        new_name = f'Chat {number}'
 
     # make new chat & attatch it to profile
     new_chat = Chat(
