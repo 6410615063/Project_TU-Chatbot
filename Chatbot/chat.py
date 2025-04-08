@@ -152,3 +152,24 @@ def refresh_chat(user, chat_name) :
             {"role": "assistant", "content": "Hello, how can I help you?"}
             ]
     chat.save()
+
+def delete_msg(user, chat_name, index) :
+    profile = user.profile
+    chats = profile.chats.all()
+
+    # get the user's chat based on given name
+    filtered_chats = chats.filter(name=chat_name)
+    if filtered_chats.count() == 1 :
+        chat = filtered_chats[0]
+        print('delete_msg: chat found')
+    else :
+        chat = chats[0]
+        print('delete_msg: chat not found')
+
+    # delete all message from index to end
+    chatlog = chat.messages[:index-1]
+    print(chatlog)
+
+    # save changes to database
+    chat.messages = chatlog
+    chat.save()

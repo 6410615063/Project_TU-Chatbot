@@ -314,3 +314,22 @@ Received messages:\n
     reply(channel_access_token, reply_token, messages)
         # send a 200 response back to Line to confirm that the message has been received
     return HttpResponse("test string", status=200)
+
+# delete the chosen message & all messages after it
+def delete_msg(request, index) :
+    # check if user is logged in
+    isLoggedIn = request.user.is_authenticated
+    if (isLoggedIn) :
+        # user
+        user = request.user
+        current_chat = request.session.get('current_chat', 'TestChat')
+
+        chat.delete_msg(user, current_chat, index)
+        print("user want to delete a message")
+    else :
+        # guest
+        chatlog = request.session.get('chatlog', ["Hello, how can I help you?"])
+        new_chatlog = chatlog[:index-1] # array start at 0, so need to -1
+
+        request.session['chatlog'] = new_chatlog
+    return redirect('main')
