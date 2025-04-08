@@ -152,13 +152,16 @@ div.topic > a, div.topic_selected > a {
   padding: 3px 6px;
 }
 
-#extra > div > :hover {
-    /*background-color: green;*/
-}
-
-#extra > div > div > a {
+#extra > div > div > a, .chat-option > a, .topic > div > a, .chat-right {
   color: black;
   text-decoration: none;
+  cursor: pointer;
+}
+
+.topic_selected > div > a {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 div.button-delete-topic {
@@ -166,14 +169,13 @@ div.button-delete-topic {
   margin: 0px 0px 0px auto;
 }
 
-.button-delete-topic a:hover {
+.chat-option > a:hover, #topic_list > div > div > a:hover, .chat-right:hover{
   background-color: rgba(0, 0, 0, 0.1);
 }
 
 #chatlog > div {
   padding: 4px;
   width: fit-content;
-  border-radius: 6px;
 }
 
 div.chat-left {
@@ -181,12 +183,22 @@ div.chat-left {
   background-color: #f27134;
   margin: 5px 15px 5px 5px;
   color: white;
+  border-radius: 6px;
 }
 
 div.chat-right {
   text-align: right;
   background-color: lightgray;
-  margin: 5px 5px 5px auto;
+  margin: 5px 5px 0px auto;
+  border-radius: 6px;
+}
+
+div.chat-option {
+  text-align: right;
+  background-color: lightgray;
+  margin: 0px 5px 5px auto;
+  border-radius: 0px 0px 6px 6px;
+  display: none;
 }
 
 #dropdown_list {
@@ -240,8 +252,9 @@ a.button {
   border-radius: 3px;
 }
 
-#btn_send:hover {
+#btn_send:hover, #btn_new_chat:hover, #btn_refresh>a:hover {
   background-color: #d85f1f;
+  cursor: pointer;
 }
 
 #btn_refresh {

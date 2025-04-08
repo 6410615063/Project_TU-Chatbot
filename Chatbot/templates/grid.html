@@ -26,7 +26,7 @@
       <div id="topic_list">
         {% if authenticated %}
           <div class="button_div">
-            <a class="button" href="/create_chat/" id="btn_new_chat">
+            <a class="button" href="/create_chat/" id="btn_new_chat" title="Create new chat">
               New Chat
             </a>
           </div>
@@ -47,10 +47,17 @@
 
       <div id="chatlog">
         {% for message in chatlog %}
-          <div class="{% cycle 'chat-left' 'chat-right' %}">
+          <div class="{% cycle 'chat-left' 'chat-right' %}" onclick="toggleChatOption(this)">
             <strong>{% cycle 'Assistant: ' 'User: ' %}</strong>
             {{ message }}
           </div>
+          {% if forloop.counter|divisibleby:2 %}
+            <div class="chat-option">
+              <a href="/delete_msg/{{ forloop.counter }}" title="Delete message (and all follow-up messages)">
+                Delete
+              </a>
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
 
@@ -63,7 +70,7 @@
                  id="input_text"
                  autocomplete="off"
                  required>
-          <button type="submit" id="btn_send">
+          <button type="submit" id="btn_send" title="Send message">
             Send
           </button>
           <div id="btn_refresh">
@@ -117,6 +124,19 @@
           document.getElementById('interface_form').submit();
         }
       });
+
+      function toggleChatOption(element) {
+        const chatOption = element.nextElementSibling;
+        if (chatOption) {
+          if (chatOption.style.display == 'block') {
+            element.style.borderRadius = '6px';
+            chatOption.style.display = 'none';
+          } else {
+            element.style.borderRadius = '6px 6px 0px 6px';
+            chatOption.style.display = 'block';
+          }
+        }
+      }
     </script>
   </body>
 </html>
