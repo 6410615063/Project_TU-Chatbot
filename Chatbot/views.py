@@ -124,6 +124,7 @@ def login_user(request) :
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            request.session['current_chat'] = chat.get_chats_2(user)[0] # set the first chat as current chat
             return redirect('main')
 
     return render(request, 'login.html')

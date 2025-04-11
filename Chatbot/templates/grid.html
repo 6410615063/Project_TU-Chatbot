@@ -19,7 +19,9 @@
       <div class="web_head" id="head_topic">
         <div id="head_topic_display">
           {{ current_chat }}
-          <img src="{% static 'edit_icon_32.png' %}" alt="Edit" class="button" onclick="toggleEditTopicName()" title="Edit Chat name">
+          {% if authenticated %}
+            <img src="{% static 'edit_icon_32.png' %}" alt="Edit" class="button" onclick="toggleEditTopicName()" title="Edit Chat name">
+          {% endif %}
         </div>
         <div id="head_topic_edit">
           <form method="post" action="/rename_chat/" >
