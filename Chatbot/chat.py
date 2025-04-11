@@ -173,3 +173,20 @@ def delete_msg(user, chat_name, index) :
     # save changes to database
     chat.messages = chatlog
     chat.save()
+
+def rename_chat(user, chat_name, new_name) :
+    profile = user.profile
+    chats = profile.chats.all()
+
+    # get the user's chat based on given name
+    filtered_chats = chats.filter(name=chat_name)
+    if filtered_chats.count() == 1 :
+        chat = filtered_chats[0]
+        print('rename_chat: chat found')
+    else :
+        chat = chats[0]
+        print('rename_chat: chat not found')
+
+    # rename chat
+    chat.name = new_name
+    chat.save()

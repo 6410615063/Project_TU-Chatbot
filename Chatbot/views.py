@@ -271,7 +271,6 @@ Received messages:\n
 
     return HttpResponse("test string", status=200)
 
-
 # for handling POST request from Line chatbot
 @csrf_exempt
 def linebot_test2(request) :
@@ -331,4 +330,16 @@ def delete_msg(request, index) :
         new_chatlog = chatlog[:index-1] # array start at 0, so need to -1
 
         request.session['chatlog'] = new_chatlog
+    return redirect('main')
+
+def rename_chat(request) :
+    isLoggedIn = request.user.is_authenticated
+    user_message = request.POST['input_chat_name']
+
+    if (isLoggedIn) :
+        user = request.user
+        current_chat = request.session.get('current_chat', 'TestChat')
+
+        chat.rename_chat(user, current_chat, user_message)
+        request.session['current_chat'] = user_message
     return redirect('main')

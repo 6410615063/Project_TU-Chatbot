@@ -43,7 +43,6 @@ body {
 
 #option {
   grid-area: option;
-  cursor: pointer;
 }
 
 #topic_list {
@@ -104,13 +103,23 @@ body {
   place-items: center;
 }
 
-img {
+img.logo {
   width: min(80%, 80px);
-  width: min(80%, 80px);
+  height: min(80%, 80px);
+}
+
+img.button {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+#option > img {
+  cursor: pointer;
 }
 
 img:hover {
-  transform: scale(1.05);
+  transform: scale(1.15);
 }
 
 div.button_div {
@@ -247,12 +256,15 @@ a.button {
 #btn_send {
   grid-area: btn_send;
   width: calc(100% - 10px);
+}
+
+form > button {
   font-size: 16px;
   border-width: 1px;
   border-radius: 3px;
 }
 
-#btn_send:hover, #btn_new_chat:hover, #btn_refresh>a:hover {
+form > button:hover, #btn_new_chat:hover, #btn_refresh>a:hover {
   background-color: #d85f1f;
   cursor: pointer;
 }
@@ -260,4 +272,8 @@ a.button {
 #btn_refresh {
   grid-area: btn_refresh;
   width: calc(100% - 10px);
+}
+
+#head_topic_edit {
+  display: none;
 }

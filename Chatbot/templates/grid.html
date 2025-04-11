@@ -10,17 +10,32 @@
   <body>
     <div id="webpage">
       <div class="web_head" id="logo_uni">
-        <img src="{% static 'university_logo.webp' %}" alt="TU Logo">
+        <img src="{% static 'university_logo.webp' %}" alt="TU Logo" class="logo">
       </div>
       <div class="web_head" id="logo_tse">
-        <img src="{% static 'tse_logo_clear.png' %}" alt="TSE Logo">
+        <img src="{% static 'tse_logo_clear.png' %}" alt="TSE Logo" class="logo">
       </div>
       <div class="web_head" id="head_empty"></div>
       <div class="web_head" id="head_topic">
-        {{ current_chat }}
+        <div id="head_topic_display">
+          {{ current_chat }}
+          <img src="{% static 'edit_icon_32.png' %}" alt="Edit" class="button" onclick="toggleEditTopicName()" title="Edit Chat name">
+        </div>
+        <div id="head_topic_edit">
+          <form method="post" action="/rename_chat/" >
+            {% csrf_token %}
+            <input type="text" id="input_topic" name="input_chat_name" placeholder="Enter new Chat name" value="{{ current_chat }}" required>
+            <button type="submit" id="btn_edit_topic" title="Edit Chat name">
+              Edit
+            </button>
+            <button type="button" id="btn_cancel_edit" title="Cancel edit" onclick="toggleEditTopicName()">
+              Cancel
+            </button>
+          </form>
+        </div>
       </div>
       <div class="web_head" id="option">
-        <img src="{% static 'burger_button_4.png' %}" alt="Menu" onclick="toggle()">
+        <img src="{% static 'burger_button_4.png' %}" alt="Menu" class="logo" onclick="toggleDropDown()">
       </div>
 
       <div id="topic_list">
@@ -112,7 +127,7 @@
 
       let btn_2_visible = false;
 
-      function toggle() {
+      function toggleDropDown() {
         btn_2_visible = !btn_2_visible;
         const button = document.getElementById('dropdown_list');
         button.style.display = btn_2_visible ? 'inline' : 'none';
@@ -136,6 +151,23 @@
             chatOption.style.display = 'block';
           }
         }
+      }
+
+      function toggleEditTopicName() {
+        // toggle the display of the topic name and edit input
+        const topicDisplay = document.getElementById('head_topic_display');
+        const topicEdit = document.getElementById('head_topic_edit');
+        if (topicDisplay.style.display === 'none') {
+          topicDisplay.style.display = 'block';
+          topicEdit.style.display = 'none';
+        } else {
+          topicDisplay.style.display = 'none';
+          topicEdit.style.display = 'block';
+        }
+
+        // reset the input field to the current chat name
+        const inputField = document.getElementById('input_topic');
+        inputField.value = '{{ current_chat }}';
       }
     </script>
   </body>
