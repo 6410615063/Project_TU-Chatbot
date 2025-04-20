@@ -1,0 +1,5 @@
+$ ngrok config add-authtoken 2v595Kg4APDugsgGikvrzBwU7pE_5BBMF8hXTyttrmtcUu4V7
+
+$ ngrok http 8000
+
+id TestUser / pass  tset12345

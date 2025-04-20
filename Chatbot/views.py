@@ -9,8 +9,16 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import requests
+import os
+from dotenv import load_dotenv
 # import evereything from line_chatbot.py
 from .line_chatbot import *
+
+# Load environment variables
+load_dotenv()
+
+# Get channel access token from environment variables
+CHANNEL_ACCESS_TOKEN = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
 
 # Create your views here.
 
@@ -277,15 +285,17 @@ Received messages:\n
 def linebot_test2(request) :
     # 1. check that the request is from Line via the 'x-line-signature' (Signature validation)
     content_type = request.headers.get('Content-Type')
+    
+    # Log the request headers for debugging
+    print("Request Headers:", request.headers)
+    
     # 2. read request body for messages
     content = json.loads(request.body)
+    print("Request Body:", content)
+    
     #   2.1 get the reply token
-        # currently dont know if event['type'] != "message" also have replyToken or not -> need to test later
-    reply_token = ""
+    reply_token = "" 
     #   2.2 check if the body is a text message
-    #       Yes -> extract the messages -> prepare to send the messages back as a reply (actually need to make a query to LLM using the messages)
-    #       No -> ask user to send a text message
-        # extract only text message
     texts = []
     events = content['events']
     for event in events :
@@ -295,6 +305,10 @@ def linebot_test2(request) :
             if message['type'] == "text" :
                 text = message['text']
                 texts.append(text)
+    
+    print("Extracted texts:", texts)
+    print("Reply token:", reply_token)
+    
     texts_display = "\n".join(texts)
     display = f"""
 Received messages:\n
@@ -304,43 +318,21 @@ Received messages:\n
     filename = "most_recent_request_body.json"
     with open(filename, 'w') as file:
         file.write(display)
+    
     # 3. send a reply back to the user
     #   3.1 request a channel access token
-    channel_access_token = get_stateless_access_token()
+    channel_access_token = CHANNEL_ACCESS_TOKEN
+    print("Channel Access Token:", channel_access_token)
+    
     #   3.2 prepare the reply message
     messages = handle_messages2(texts)
+    print("Prepared messages:", messages)
+    
     #   3.3 send the reply message back to the user
-    reply(channel_access_token, reply_token, messages)
-        # send a 200 response back to Line to confirm that the message has been received
+    try:
+        reply(channel_access_token, reply_token, messages)
+        print("Reply sent successfully")
+    except Exception as e:
+        print("Error sending reply:", str(e))
+    
     return HttpResponse("test string", status=200)
-
-# delete the chosen message & all messages after it
-def delete_msg(request, index) :
-    # check if user is logged in
-    isLoggedIn = request.user.is_authenticated
-    if (isLoggedIn) :
-        # user
-        user = request.user
-        current_chat = request.session.get('current_chat', 'TestChat')
-
-        chat.delete_msg(user, current_chat, index)
-        print("user want to delete a message")
-    else :
-        # guest
-        chatlog = request.session.get('chatlog', ["Hello, how can I help you?"])
-        new_chatlog = chatlog[:index-1] # array start at 0, so need to -1
-
-        request.session['chatlog'] = new_chatlog
-    return redirect('main')
-
-def rename_chat(request) :
-    isLoggedIn = request.user.is_authenticated
-    user_message = request.POST['input_chat_name']
-
-    if (isLoggedIn) :
-        user = request.user
-        current_chat = request.session.get('current_chat', 'TestChat')
-
-        chat.rename_chat(user, current_chat, user_message)
-        request.session['current_chat'] = user_message
-    return redirect('main')

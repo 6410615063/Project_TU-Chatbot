@@ -35,50 +35,65 @@ def generate() :
 def generate(context) :
     # get service account and project id
     service_account_name = "service_account.json"  # Ensure this path is correct
-    service_account_file = Path(settings.BASE_DIR, f"static/{service_account_name}")
-    with open(service_account_file, "r") as file:
-        service_account_data = json.load(file)
-        project_id = service_account_data["project_id"]
+    service_account_file = Path(settings.BASE_DIR, "static", service_account_name)
+    
+    try:
+        with open(service_account_file, "r") as file:
+            service_account_data = json.load(file)
+            project_id = service_account_data["project_id"]
+    except FileNotFoundError:
+        print(f"Error: service_account.json not found at {service_account_file}")
+        return "Sorry, I'm having trouble connecting to the AI service right now."
+    except json.JSONDecodeError:
+        print(f"Error: service_account.json is not valid JSON")
+        return "Sorry, there's a configuration error with the AI service."
+    except Exception as e:
+        print(f"Error reading service_account.json: {str(e)}")
+        return "Sorry, I'm having trouble connecting to the AI service right now."
 
     # Define the required scopes
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
 
-    # Load the service account credentials with the specified scopes
-    credentials = service_account.Credentials.from_service_account_file(service_account_file, scopes=scopes)
+    try:
+        # Load the service account credentials with the specified scopes
+        credentials = service_account.Credentials.from_service_account_file(service_account_file, scopes=scopes)
 
-    # Create a request object
-    request = google.auth.transport.requests.Request()
+        # Create a request object
+        request = google.auth.transport.requests.Request()
 
-    # Refresh the credentials to get the access token
-    credentials.refresh(request)
+        # Refresh the credentials to get the access token
+        credentials.refresh(request)
 
-    # Get the access token
-    access_token = credentials.token
+        # Get the access token
+        access_token = credentials.token
 
-    # Plan - make a curl request to vertex api
-    url = f"https://us-central1-aiplatform.googleapis.com/v1/projects/{project_id}/locations/us-central1/publishers/anthropic/models/claude-3-haiku@20240307:streamRawPredict"
-    headers = {
-        "Authorization": f"Bearer {access_token}",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "anthropic_version": "vertex-2023-10-16",
-        "system": "You are a chatbot of the faculty of engineering of Thammasat university. Your job is to answer question related to the faculty. Your answer should be short",
-        "messages": context,
-        "max_tokens": 300,
-        "stream": True
-    }
+        # Plan - make a curl request to vertex api
+        url = f"https://us-central1-aiplatform.googleapis.com/v1/projects/{project_id}/locations/us-central1/publishers/anthropic/models/claude-3-haiku@20240307:streamRawPredict"
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json"
+        }
+        data = {
+            "anthropic_version": "vertex-2023-10-16",
+            "system": "You are a chatbot of the faculty of engineering of Thammasat university. Your job is to answer question related to the faculty. Your answer should be short",
+            "messages": context,
+            "max_tokens": 300,
+            "stream": True
+        }
 
-    # Make the POST request
-    response = requests.post(url, headers=headers, json=data)
+        # Make the POST request
+        response = requests.post(url, headers=headers, json=data)
 
-    # Check the response status code
-    if response.status_code == 200:
-        message = convert(response)
-        return message
-    else:
-        print(f"Request failed with status code {response.status_code} and response: {response.text}")
-        return "Error happend, check terminal"
+        # Check the response status code
+        if response.status_code == 200:
+            message = convert(response)
+            return message
+        else:
+            print(f"Request failed with status code {response.status_code} and response: {response.text}")
+            return "Error happened, check terminal"
+    except Exception as e:
+        print(f"Error in generate function: {str(e)}")
+        return "Sorry, I'm having trouble connecting to the AI service right now."
 
 recent_timestamps = [] # list of recent timestamps of generate requests
 max_requests_per_minute = 4 # max number of requests per minute

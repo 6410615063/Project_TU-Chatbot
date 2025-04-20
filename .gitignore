@@ -1,3 +1,8 @@
 venv/
 service_account.json
-most_recent_request_body.json
+most_recent_request_body.json__pycache__/
+*.pyc
+db.sqlite3
+__pycache__/
+*.pyc
+db.sqlite3

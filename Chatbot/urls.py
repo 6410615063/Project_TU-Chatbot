@@ -12,7 +12,5 @@ urlpatterns = [
     path('delete_chat/<str:chat_name>', views.delete_chat),
     path('test_form/', views.test_form),
     path('create_user/', views.create_user),
-    path('linebot_test/', views.linebot_test2),
-    path('delete_msg/<int:index>', views.delete_msg),
-    path('rename_chat/', views.rename_chat),
+    path('linebot_test2/', views.linebot_test2)
 ]
