@@ -11,7 +11,7 @@ body {
   height: 100vh;
   display: grid;
   grid-template-columns: max(15%, 140px) 15% auto 15% max(15%, 60px);
-  grid-template-rows: 100px calc(100% - 132px) 32px;
+  grid-template-rows: 100px calc(100% - 152px) 52px;
   grid-template-areas:  "logo_uni   logo_tse    head_topic  empty       option"
                         "topic_list chatlog     chatlog     chatlog     extra"
                         "topic_list interface   interface   interface   extra";
@@ -70,7 +70,7 @@ body {
   grid-template-rows: 1fr;
   grid-template-areas:  "input_text btn_send btn_refresh";
   place-items: center;
-  padding: 5px;
+  padding: 10px;
 }
 
 #extra {
@@ -251,6 +251,7 @@ a.button {
 #input_text {
   grid-area: input_text;
   width: calc(100% - 20px);
+  height: 25px;
 }
 
 #btn_send {
